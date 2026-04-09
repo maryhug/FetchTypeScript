@@ -1,0 +1,77 @@
+// ============================================================
+// SERVICIOS DEL FRONTEND
+//
+// La diferencia clave con el backend:
+// Aquí fetchData llama a NUESTRO backend (via ngrok),
+// no directamente a las APIs externas.
+//
+// Flujo completo:
+//   Browser → fetchData('/api/anime')
+//           → NEXT_PUBLIC_API_URL + '/api/anime'
+//           → ngrok tunnel
+//           → localhost:4000
+//           → Express → AnimeChan (o fallback)
+// ============================================================
+
+import type { ApiResponse } from "@/types";
+
+// Lee la URL del backend desde las variables de entorno
+// En producción esto apunta a ngrok; en local puede apuntar a localhost:4000
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+
+// ============================================================
+// PARTE 2: fetchData<T> — Función genérica de fetching
+// ============================================================
+export async function fetchData<T>(endpoint: string): Promise<ApiResponse<T>> {
+  const url = `${BASE_URL}${endpoint}`;
+
+  try {
+    const response = await fetch(url, {
+      // ngrok requiere este header en su plan gratuito
+      // para evitar la página de advertencia de ngrok
+      headers: {
+        "ngrok-skip-browser-warning": "true",
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      return {
+        data: null,
+        status: response.status,
+        error: `Error ${response.status}: ${response.statusText}`,
+        source: "api",
+      };
+    }
+
+    const data = (await response.json()) as ApiResponse<T>;
+    return data;
+
+  } catch (err) {
+    return {
+      data: null,
+      status: 0,
+      error: err instanceof Error ? err.message : "No se pudo conectar con el servidor",
+      source: "api",
+    };
+  }
+}
+
+// ============================================================
+// PARTE 3: ApiService<T> — Clase genérica
+// ============================================================
+export class ApiService<T> {
+  private endpoint: string;
+
+  constructor(endpoint: string) {
+    this.endpoint = endpoint;
+  }
+
+  async getAll(): Promise<ApiResponse<T[]>> {
+    return fetchData<T[]>(this.endpoint);
+  }
+
+  async getOne(id: number): Promise<ApiResponse<T>> {
+    return fetchData<T>(`${this.endpoint}/${id}`);
+  }
+}
