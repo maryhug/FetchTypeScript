@@ -15,52 +15,29 @@
 
 import type { ApiResponse } from "@/types";
 
-// Lee la URL del backend desde las variables de entorno
-// En producción esto apunta a ngrok; en local puede apuntar a localhost:4000
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
-// ============================================================
-// PARTE 2: fetchData<T> — Función genérica de fetching
-// ============================================================
+const defaultHeaders = {
+  "ngrok-skip-browser-warning": "true",
+  Accept: "application/json",
+  "Content-Type": "application/json",
+};
+
 export async function fetchData<T>(endpoint: string): Promise<ApiResponse<T>> {
   const url = `${BASE_URL}${endpoint}`;
-
   try {
-    const response = await fetch(url, {
-      // ngrok requiere este header en su plan gratuito
-      // para evitar la página de advertencia de ngrok
-      headers: {
-        "ngrok-skip-browser-warning": "true",
-        Accept: "application/json",
-      },
-    });
-
+    const response = await fetch(url, { headers: defaultHeaders });
     if (!response.ok) {
-      return {
-        data: null,
-        status: response.status,
-        error: `Error ${response.status}: ${response.statusText}`,
-        source: "api",
-      };
+      return { data: null, status: response.status, error: `Error ${response.status}: ${response.statusText}`, source: "api" };
     }
-
     const data = (await response.json()) as ApiResponse<T>;
     return data;
-
   } catch (err) {
-    return {
-      data: null,
-      status: 0,
-      error: err instanceof Error ? err.message : "No se pudo conectar con el servidor",
-      source: "api",
-    };
+    return { data: null, status: 0, error: err instanceof Error ? err.message : "No se pudo conectar con el servidor", source: "api" };
   }
 }
 
-// ============================================================
-// PARTE 3: ApiService<T> — Clase genérica
-// ============================================================
-export class ApiService<T> {
+export class ApiService<T extends { id: number }> {
   private endpoint: string;
 
   constructor(endpoint: string) {
@@ -73,5 +50,49 @@ export class ApiService<T> {
 
   async getOne(id: number): Promise<ApiResponse<T>> {
     return fetchData<T>(`${this.endpoint}/${id}`);
+  }
+
+  async create(body: Omit<T, "id">): Promise<ApiResponse<T>> {
+    const url = `${BASE_URL}${this.endpoint}`;
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: defaultHeaders,
+        body: JSON.stringify(body),
+      });
+      const data = (await response.json()) as ApiResponse<T>;
+      return data;
+    } catch (err) {
+      return { data: null, status: 0, error: err instanceof Error ? err.message : "Error de red", source: "api" };
+    }
+  }
+
+  async update(id: number, body: Partial<Omit<T, "id">>): Promise<ApiResponse<T>> {
+    const url = `${BASE_URL}${this.endpoint}/${id}`;
+    try {
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: defaultHeaders,
+        body: JSON.stringify(body),
+      });
+      const data = (await response.json()) as ApiResponse<T>;
+      return data;
+    } catch (err) {
+      return { data: null, status: 0, error: err instanceof Error ? err.message : "Error de red", source: "api" };
+    }
+  }
+
+  async delete(id: number): Promise<ApiResponse<null>> {
+    const url = `${BASE_URL}${this.endpoint}/${id}`;
+    try {
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: defaultHeaders,
+      });
+      const data = (await response.json()) as ApiResponse<null>;
+      return data;
+    } catch (err) {
+      return { data: null, status: 0, error: err instanceof Error ? err.message : "Error de red", source: "api" };
+    }
   }
 }

@@ -8,7 +8,7 @@
 // ============================================================
 
 import fetch from "node-fetch";
-import type { ApiResponse } from "./types";
+import type { ApiResponse } from "../types/types";
 
 export async function fetchData<T>(url: string): Promise<ApiResponse<T>> {
   try {

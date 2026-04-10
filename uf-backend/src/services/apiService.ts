@@ -11,7 +11,7 @@
 // ============================================================
 
 import { fetchData } from "./fetchData";
-import type { ApiResponse } from "./types";
+import type { ApiResponse } from "../types/types";
 
 export class ApiService<T> {
   // El endpoint base se guarda como atributo privado

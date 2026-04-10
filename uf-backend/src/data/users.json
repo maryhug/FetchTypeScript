@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "name": {
+      "title": "Ms",
+      "first": "Valentina",
+      "last": "Torres"
+    },
+    "email": "v.torres@example.com",
+    "location": {
+      "country": "Colombia",
+      "city": "Medellín"
+    },
+    "picture": {
+      "large": "https://randomuser.me/api/portraits/women/1.jpg",
+      "medium": "https://randomuser.me/api/portraits/med/women/1.jpg",
+      "thumbnail": "https://randomuser.me/api/portraits/thumb/women/1.jpg"
+    },
+    "phone": "300-123-4567",
+    "nat": "CO"
+  },
+  {
+    "id": 2,
+    "name": {
+      "title": "Mr",
+      "first": "Sebastián",
+      "last": "Molina"
+    },
+    "email": "s.molina@example.com",
+    "location": {
+      "country": "México",
+      "city": "Ciudad de México"
+    },
+    "picture": {
+      "large": "https://randomuser.me/api/portraits/men/2.jpg",
+      "medium": "https://randomuser.me/api/portraits/med/men/2.jpg",
+      "thumbnail": "https://randomuser.me/api/portraits/thumb/men/2.jpg"
+    },
+    "phone": "55-987-6543",
+    "nat": "MX"
+  },
+  {
+    "id": 3,
+    "name": {
+      "title": "Ms",
+      "first": "Camila",
+      "last": "Ríos"
+    },
+    "email": "c.rios@example.com",
+    "location": {
+      "country": "Argentina",
+      "city": "Buenos Aires"
+    },
+    "picture": {
+      "large": "https://randomuser.me/api/portraits/women/3.jpg",
+      "medium": "https://randomuser.me/api/portraits/med/women/3.jpg",
+      "thumbnail": "https://randomuser.me/api/portraits/thumb/women/3.jpg"
+    },
+    "phone": "11-222-3333",
+    "nat": "AR"
+  },
+  {
+    "id": 4,
+    "name": {
+      "title": "Mr",
+      "first": "Andrés",
+      "last": "Peña"
+    },
+    "email": "a.pena@example.com",
+    "location": {
+      "country": "Chile",
+      "city": "Santiago"
+    },
+    "picture": {
+      "large": "https://randomuser.me/api/portraits/men/4.jpg",
+      "medium": "https://randomuser.me/api/portraits/med/men/4.jpg",
+      "thumbnail": "https://randomuser.me/api/portraits/thumb/men/4.jpg"
+    },
+    "phone": "2-333-4444",
+    "nat": "CL"
+  },
+  {
+    "id": 5,
+    "name": {
+      "title": "Ms",
+      "first": "Laura",
+      "last": "García"
+    },
+    "email": "l.garcia@example.com",
+    "location": {
+      "country": "España",
+      "city": "Madrid"
+    },
+    "picture": {
+      "large": "https://randomuser.me/api/portraits/women/5.jpg",
+      "medium": "https://randomuser.me/api/portraits/med/women/5.jpg",
+      "thumbnail": "https://randomuser.me/api/portraits/thumb/women/5.jpg"
+    },
+    "phone": "91-555-6677",
+    "nat": "ES"
+  },
+  {
+    "id": 6,
+    "name": {
+      "title": "Mr",
+      "first": "Carlos",
+      "last": "López"
+    },
+    "email": "c.lopez@example.com",
+    "location": {
+      "country": "Colombia",
+      "city": "Bogotá"
+    },
+    "picture": {
+      "large": "https://randomuser.me/api/portraits/men/6.jpg",
+      "medium": "https://randomuser.me/api/portraits/med/men/6.jpg",
+      "thumbnail": "https://randomuser.me/api/portraits/thumb/men/6.jpg"
+    },
+    "phone": "310-888-9999",
+    "nat": "CO"
+  },
+  {
+    "id": 7,
+    "name": {
+      "title": "Ms",
+      "first": "Maryhug",
+      "last": "Duran"
+    },
+    "email": "maryhug@gmail.com",
+    "phone": "3112458964",
+    "location": {
+      "country": "Colombia",
+      "city": "Medellín"
+    },
+    "picture": {
+      "large": "",
+      "medium": "",
+      "thumbnail": ""
+    },
+    "nat": "CO"
+  }
+]

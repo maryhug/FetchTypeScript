@@ -10,16 +10,18 @@ export interface ApiResponse<T> {
   data: T | null;
   status: number;
   error: string | null;
-  source: "api" | "fallback"; // Nos dice si vino de la API real o del respaldo
+  source: "api" | "fallback" | "local";
 }
 
 export interface AnimeQuote {
+  id: number;
   anime: string;
   character: string;
   quote: string;
 }
 
 export interface RandomUser {
+  id: number;
   name: { title: string; first: string; last: string };
   email: string;
   location: { country: string; city: string };
