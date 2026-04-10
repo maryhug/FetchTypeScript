@@ -40,8 +40,8 @@ export default function Dashboard() {
 
   const connLabel = {
     loading: "⏳ Verificando conexión...",
-    ok:      "✅ Backend conectado",
-    error:   "❌ No se pudo conectar con el backend",
+    ok:      "● Backend conectado",
+    error:   "● Sin conexión con el backend",
   }[connStatus];
 
   const connClass = {
@@ -55,26 +55,32 @@ export default function Dashboard() {
       <header className="header">
         <div className="header-badges">
           <span className="badge badge-purple">Next.js 14</span>
-          <span className="badge badge-green">Express Backend</span>
+          <span className="badge badge-green">Express</span>
           <span className="badge badge-yellow">GET · POST · PUT · DELETE</span>
         </div>
+
         <h1>Universal Data Fetcher</h1>
         <p className="header-subtitle">
           Consume, gestiona y persiste datos de múltiples APIs externas
         </p>
+
         <div className={`conn-status ${connClass}`}>
           {connLabel}
           {connStatus === "error" && (
-            <button className="btn-retry" onClick={checkConnection}>↺ Reintentar</button>
+            <button className="btn-retry" onClick={checkConnection}>
+              ↺ Reintentar
+            </button>
           )}
         </div>
       </header>
 
+      {/* Tabs */}
       <div className="tabs">
         {(Object.keys(TAB_LABELS) as Tab[]).map(t => (
           <button
             key={t}
-            className={`tab-btn ${tab === t ? "active" : ""}`}
+            data-tab={t}
+            className={`tab-btn${tab === t ? " active" : ""}`}
             onClick={() => setTab(t)}
           >
             {TAB_LABELS[t]}
@@ -82,14 +88,15 @@ export default function Dashboard() {
         ))}
       </div>
 
+      {/* Endpoint activo */}
       <div className="endpoint-bar">
-        <span className="endpoint-label">Endpoint activo:</span>
+        <span className="endpoint-label">Endpoint activo</span>
         <code className="endpoint-url">{ENDPOINTS[tab]}</code>
       </div>
 
       <main className="main">
-        {tab === "apod"   && <ApodPanel  />}
-        {tab === "users"  && <UsersPanel />}
+        {tab === "apod"   && <ApodPanel   />}
+        {tab === "users"  && <UsersPanel  />}
         {tab === "fruits" && <FruitsPanel />}
       </main>
     </div>
