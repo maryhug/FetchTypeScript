@@ -1,11 +1,3 @@
-// ============================================================
-// TIPOS DEL FRONTEND
-// Son los mismos que en el backend — en un proyecto real
-// podrías compartirlos con un paquete o monorepo.
-// Aquí los repetimos para mantener los proyectos independientes.
-// ============================================================
-
-// Respuesta genérica que devuelve NUESTRO backend
 export interface ApiResponse<T> {
   data: T | null;
   status: number;

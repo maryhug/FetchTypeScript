@@ -9,95 +9,89 @@ type Tab = "apod" | "users" | "fruits";
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
 const TAB_LABELS: Record<Tab, string> = {
-    apod:   "🌌 NASA APOD",
-    users:  "👤 Usuarios",
-    fruits: "🍎 Frutas",
+  apod:   "🌌 NASA APOD",
+  users:  "👤 Usuarios",
+  fruits: "🍎 Frutas",
 };
 
 const ENDPOINTS: Record<Tab, string> = {
-    apod:   `${API_URL}/api/apod`,
-    users:  `${API_URL}/api/users`,
-    fruits: `${API_URL}/api/fruits`,
+  apod:   `${API_URL}/api/apod`,
+  users:  `${API_URL}/api/users`,
+  fruits: `${API_URL}/api/fruits`,
 };
 
 export default function Dashboard() {
-    const [tab,        setTab]        = useState<Tab>("apod");
-    const [connStatus, setConnStatus] = useState<"loading" | "ok" | "error">("loading");
+  const [tab,        setTab]        = useState<Tab>("apod");
+  const [connStatus, setConnStatus] = useState<"loading" | "ok" | "error">("loading");
 
-    useEffect(() => { checkConnection(); }, []);
+  useEffect(() => { checkConnection(); }, []);
 
-    async function checkConnection() {
-        setConnStatus("loading");
-        try {
-            const res = await fetch(`${API_URL}/health`, {
-                headers: { "ngrok-skip-browser-warning": "true" },
-            });
-            setConnStatus(res.ok ? "ok" : "error");
-        } catch {
-            setConnStatus("error");
-        }
+  async function checkConnection() {
+    setConnStatus("loading");
+    try {
+      const res = await fetch(`${API_URL}/health`, {
+        headers: { "ngrok-skip-browser-warning": "true" },
+      });
+      setConnStatus(res.ok ? "ok" : "error");
+    } catch {
+      setConnStatus("error");
     }
+  }
 
-    const connLabel = {
-        loading: "⏳ Verificando conexión...",
-        ok:      "✅ Backend conectado",
-        error:   "❌ No se pudo conectar con el backend",
-    }[connStatus];
+  const connLabel = {
+    loading: "⏳ Verificando conexión...",
+    ok:      "✅ Backend conectado",
+    error:   "❌ No se pudo conectar con el backend",
+  }[connStatus];
 
-    const connClass = {
-        loading: "conn-loading",
-        ok:      "conn-ok",
-        error:   "conn-error",
-    }[connStatus];
+  const connClass = {
+    loading: "conn-loading",
+    ok:      "conn-ok",
+    error:   "conn-error",
+  }[connStatus];
 
-    return (
-        <div className="app">
-
-            {/* HEADER */}
-            <header className="header">
-                <div className="header-badges">
-                    <span className="badge badge-purple">Next.js 14</span>
-                    <span className="badge badge-green">Express Backend</span>
-                    <span className="badge badge-yellow">GET · POST · PUT · DELETE</span>
-                </div>
-                <h1>Universal Data Fetcher</h1>
-                <p className="header-subtitle">
-                    Consume, gestiona y persiste datos de múltiples APIs externas
-                </p>
-                <div className={`conn-status ${connClass}`}>
-                    {connLabel}
-                    {connStatus === "error" && (
-                        <button className="btn-retry" onClick={checkConnection}>↺ Reintentar</button>
-                    )}
-                </div>
-            </header>
-
-            {/* TABS */}
-            <div className="tabs">
-                {(Object.keys(TAB_LABELS) as Tab[]).map(t => (
-                    <button
-                        key={t}
-                        className={`tab-btn ${tab === t ? "active" : ""}`}
-                        onClick={() => setTab(t)}
-                    >
-                        {TAB_LABELS[t]}
-                    </button>
-                ))}
-            </div>
-
-            {/* ENDPOINT INFO */}
-            <div className="endpoint-bar">
-                <span className="endpoint-label">Endpoint activo:</span>
-                <code className="endpoint-url">{ENDPOINTS[tab]}</code>
-            </div>
-
-            {/* CONTENIDO */}
-            <main className="main">
-                {tab === "apod"   && <ApodPanel  />}
-                {tab === "users"  && <UsersPanel />}
-                {tab === "fruits" && <FruitsPanel />}
-            </main>
-
+  return (
+    <div className="app">
+      <header className="header">
+        <div className="header-badges">
+          <span className="badge badge-purple">Next.js 14</span>
+          <span className="badge badge-green">Express Backend</span>
+          <span className="badge badge-yellow">GET · POST · PUT · DELETE</span>
         </div>
-    );
+        <h1>Universal Data Fetcher</h1>
+        <p className="header-subtitle">
+          Consume, gestiona y persiste datos de múltiples APIs externas
+        </p>
+        <div className={`conn-status ${connClass}`}>
+          {connLabel}
+          {connStatus === "error" && (
+            <button className="btn-retry" onClick={checkConnection}>↺ Reintentar</button>
+          )}
+        </div>
+      </header>
+
+      <div className="tabs">
+        {(Object.keys(TAB_LABELS) as Tab[]).map(t => (
+          <button
+            key={t}
+            className={`tab-btn ${tab === t ? "active" : ""}`}
+            onClick={() => setTab(t)}
+          >
+            {TAB_LABELS[t]}
+          </button>
+        ))}
+      </div>
+
+      <div className="endpoint-bar">
+        <span className="endpoint-label">Endpoint activo:</span>
+        <code className="endpoint-url">{ENDPOINTS[tab]}</code>
+      </div>
+
+      <main className="main">
+        {tab === "apod"   && <ApodPanel  />}
+        {tab === "users"  && <UsersPanel />}
+        {tab === "fruits" && <FruitsPanel />}
+      </main>
+    </div>
+  );
 }

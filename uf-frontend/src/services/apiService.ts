@@ -1,18 +1,3 @@
-// ============================================================
-// SERVICIOS DEL FRONTEND
-//
-// La diferencia clave con el backend:
-// Aquí fetchData llama a NUESTRO backend (via ngrok),
-// no directamente a las APIs externas.
-//
-// Flujo completo:
-//   Browser → fetchData('/api/anime')
-//           → NEXT_PUBLIC_API_URL + '/api/anime'
-//           → ngrok tunnel
-//           → localhost:4000
-//           → Express → AnimeChan (o fallback)
-// ============================================================
-
 import type { ApiResponse } from "@/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
