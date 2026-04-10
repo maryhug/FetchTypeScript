@@ -13,13 +13,6 @@ export interface ApiResponse<T> {
   source: "api" | "fallback" | "local";
 }
 
-export interface AnimeQuote {
-  id: number;
-  anime: string;
-  character: string;
-  quote: string;
-}
-
 export interface RandomUser {
   id: number;
   name: { title: string; first: string; last: string };
@@ -47,4 +40,15 @@ export interface Fruit {
     carbohydrates: number;
     protein: number;
   };
+}
+
+export interface ApodEntry {
+  id:          number;
+  date:        string;
+  title:       string;
+  explanation: string;
+  url:         string;
+  hdurl?:      string;
+  media_type:  "image" | "video";
+  copyright?:  string;
 }

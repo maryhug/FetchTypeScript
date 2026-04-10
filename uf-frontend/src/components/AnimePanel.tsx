@@ -55,6 +55,53 @@ export default function AnimePanel() {
         setQuote(null);
     }
 
+    const [searchQuery, setSearchQuery] = useState("");
+
+    async function handleSearch(e: React.FormEvent) {
+        e.preventDefault();
+        if (!searchQuery.trim()) return;
+        setLoading(true);
+
+        const byId = parseInt(searchQuery, 10);
+
+        if (!isNaN(byId)) {
+            // Buscar por ID
+            const result = await animeService.getOne(byId);
+            if (result.data) {
+                setQuote(result.data);
+                setSource(result.source);
+            } else {
+                notify(`❌ Cita con ID ${byId} no encontrada`);
+            }
+        } else {
+            // Buscar por anime o personaje — usamos el endpoint /all
+            const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+            try {
+                const res = await fetch(`${BASE_URL}/api/anime/all`, {
+                    headers: { "ngrok-skip-browser-warning": "true", Accept: "application/json" },
+                });
+                const json = await res.json();
+                const all: AnimeQuote[] = Array.isArray(json?.data) ? json.data : [];
+
+                const found = all.find(
+                    (q) =>
+                        q.anime.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        q.character.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+
+                if (found) {
+                    setQuote(found);
+                    setSource("local");
+                } else {
+                    notify(`❌ No se encontró cita para "${searchQuery}"`);
+                }
+            } catch {
+                notify("❌ Error buscando citas");
+            }
+        }
+        setLoading(false);
+    }
+
     return (
         <div className="panel">
             {message && <div className="toast">{message}</div>}
@@ -82,6 +129,20 @@ export default function AnimePanel() {
                         </button>
                     )}
                 </div>
+            </form>
+
+            <form onSubmit={handleSearch} className="search-bar">
+                <input
+                    placeholder="Buscar por ID, anime o personaje"
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                />
+                <button type="submit" className="btn-search">🔍 Buscar</button>
+                {searchQuery && (
+                    <button type="button" className="btn-cancel" onClick={() => { setSearchQuery(""); setQuote(null); }}>
+                        ✕ Limpiar
+                    </button>
+                )}
             </form>
 
             {/* GET */}

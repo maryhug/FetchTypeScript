@@ -5,15 +5,26 @@ import type { Fruit, ApiResponse } from "../types/types";
 
 const repo = new FruitsRepository();
 
-// GET /api/fruits — llama API externa, fallback al JSON local
+// GET /api/fruits — primero intenta API externa, pero si hay datos locales modificados los prioriza
 export async function getAllFruits(_req: Request, res: Response) {
     const result = await fetchData<Fruit[]>("https://fruityvice.com/api/fruit/all");
 
     if (result.data && Array.isArray(result.data) && result.data.length > 0) {
-        res.json({ data: result.data, status: 200, error: null, source: "api" });
+        // Mezcla: los datos de la API, pero reemplazados por los locales si existen
+        const localFruits = repo.readAll();
+        const localIds = new Set(localFruits.map(f => f.id));
+
+        // Frutas de la API que NO están en local (no han sido tocadas)
+        const apiOnly = (result.data as Fruit[]).filter(f => !localIds.has(f.id));
+
+        // Resultado: locales primero (con tus ediciones) + las de la API que no tienes
+        const merged = [...localFruits, ...apiOnly];
+
+        res.json({ data: merged, status: 200, error: null, source: "api" });
         return;
     }
 
+    // Si la API falla, solo locales
     res.json({ data: repo.readAll(), status: 200, error: null, source: "fallback" });
 }
 

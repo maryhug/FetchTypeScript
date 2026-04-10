@@ -17,7 +17,7 @@ import type { ApiResponse } from "@/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
-const defaultHeaders = {
+const defaultHeaders: HeadersInit = {
   "ngrok-skip-browser-warning": "true",
   Accept: "application/json",
   "Content-Type": "application/json",
@@ -28,12 +28,22 @@ export async function fetchData<T>(endpoint: string): Promise<ApiResponse<T>> {
   try {
     const response = await fetch(url, { headers: defaultHeaders });
     if (!response.ok) {
-      return { data: null, status: response.status, error: `Error ${response.status}: ${response.statusText}`, source: "api" };
+      return {
+        data: null,
+        status: response.status,
+        error: `Error ${response.status}: ${response.statusText}`,
+        source: "api",
+      };
     }
     const data = (await response.json()) as ApiResponse<T>;
     return data;
   } catch (err) {
-    return { data: null, status: 0, error: err instanceof Error ? err.message : "No se pudo conectar con el servidor", source: "api" };
+    return {
+      data: null,
+      status: 0,
+      error: err instanceof Error ? err.message : "No se pudo conectar con el servidor",
+      source: "api",
+    };
   }
 }
 
@@ -60,8 +70,7 @@ export class ApiService<T extends { id: number }> {
         headers: defaultHeaders,
         body: JSON.stringify(body),
       });
-      const data = (await response.json()) as ApiResponse<T>;
-      return data;
+      return (await response.json()) as ApiResponse<T>;
     } catch (err) {
       return { data: null, status: 0, error: err instanceof Error ? err.message : "Error de red", source: "api" };
     }
@@ -75,8 +84,7 @@ export class ApiService<T extends { id: number }> {
         headers: defaultHeaders,
         body: JSON.stringify(body),
       });
-      const data = (await response.json()) as ApiResponse<T>;
-      return data;
+      return (await response.json()) as ApiResponse<T>;
     } catch (err) {
       return { data: null, status: 0, error: err instanceof Error ? err.message : "Error de red", source: "api" };
     }
@@ -89,8 +97,7 @@ export class ApiService<T extends { id: number }> {
         method: "DELETE",
         headers: defaultHeaders,
       });
-      const data = (await response.json()) as ApiResponse<null>;
-      return data;
+      return (await response.json()) as ApiResponse<null>;
     } catch (err) {
       return { data: null, status: 0, error: err instanceof Error ? err.message : "Error de red", source: "api" };
     }

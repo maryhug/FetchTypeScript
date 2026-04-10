@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import fruitsRouter from "./routes/fruits.routes";
 import usersRouter from "./routes/users.routes";
-import animeRouter from "./routes/anime.routes";
+import apodRouter from "./routes/apod.routes";
 
 const app = express();
 const PORT = 4000;
@@ -13,7 +13,7 @@ app.use(express.json());
 // Rutas
 app.use("/api/fruits", fruitsRouter);
 app.use("/api/users",  usersRouter);
-app.use("/api/anime",  animeRouter);
+app.use("/api/apod", apodRouter);
 
 app.get("/health", (_req, res) => {
   res.json({ status: "ok", message: "Backend corriendo en puerto 4000" });

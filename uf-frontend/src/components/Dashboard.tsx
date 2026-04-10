@@ -1,15 +1,27 @@
 "use client";
 import { useState, useEffect } from "react";
-import AnimePanel  from "./AnimePanel";
+import ApodPanel   from "./ApodPanel";
 import UsersPanel  from "./UsersPanel";
 import FruitsPanel from "./FruitsPanel";
 
-type Tab = "anime" | "users" | "fruits";
+type Tab = "apod" | "users" | "fruits";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
+const TAB_LABELS: Record<Tab, string> = {
+    apod:   "🌌 NASA APOD",
+    users:  "👤 Usuarios",
+    fruits: "🍎 Frutas",
+};
+
+const ENDPOINTS: Record<Tab, string> = {
+    apod:   `${API_URL}/api/apod`,
+    users:  `${API_URL}/api/users`,
+    fruits: `${API_URL}/api/fruits`,
+};
+
 export default function Dashboard() {
-    const [tab,        setTab]        = useState<Tab>("anime");
+    const [tab,        setTab]        = useState<Tab>("apod");
     const [connStatus, setConnStatus] = useState<"loading" | "ok" | "error">("loading");
 
     useEffect(() => { checkConnection(); }, []);
@@ -27,16 +39,16 @@ export default function Dashboard() {
     }
 
     const connLabel = {
-        loading: "Verificando conexión...",
-        ok:      "Backend conectado",
-        error:   "No se pudo conectar con el backend",
+        loading: "⏳ Verificando conexión...",
+        ok:      "✅ Backend conectado",
+        error:   "❌ No se pudo conectar con el backend",
     }[connStatus];
 
-    const endpointMap: Record<Tab, string> = {
-        anime:  `${API_URL}/api/anime`,
-        users:  `${API_URL}/api/users`,
-        fruits: `${API_URL}/api/fruits`,
-    };
+    const connClass = {
+        loading: "conn-loading",
+        ok:      "conn-ok",
+        error:   "conn-error",
+    }[connStatus];
 
     return (
         <div className="app">
@@ -49,75 +61,43 @@ export default function Dashboard() {
                     <span className="badge badge-yellow">GET · POST · PUT · DELETE</span>
                 </div>
                 <h1>Universal Data Fetcher</h1>
-                <p className="header-sub">
-                    Frontend → Backend Express (localhost:4000) → APIs externas + JSON local
+                <p className="header-subtitle">
+                    Consume, gestiona y persiste datos de múltiples APIs externas
                 </p>
+                <div className={`conn-status ${connClass}`}>
+                    {connLabel}
+                    {connStatus === "error" && (
+                        <button className="btn-retry" onClick={checkConnection}>↺ Reintentar</button>
+                    )}
+                </div>
             </header>
 
-            {/* BARRA DE CONEXIÓN */}
-            <div className="connection-bar">
-                <span className={`conn-dot ${connStatus}`} />
-                <span style={{ fontSize: "0.72rem" }}>{connLabel}</span>
-                <span className="conn-url">{API_URL}</span>
-                <button
-                    onClick={checkConnection}
-                    style={{
-                        background: "none", border: "1px solid var(--border)",
-                        color: "var(--text-secondary)", cursor: "pointer",
-                        fontSize: "0.65rem", padding: "0.2rem 0.5rem",
-                        borderRadius: "3px", fontFamily: "var(--font-mono)",
-                        textTransform: "uppercase", letterSpacing: "0.05em",
-                    }}
-                >
-                    ↺ Reconectar
-                </button>
-            </div>
-
             {/* TABS */}
-            <nav className="tabs">
-                {(["anime", "users", "fruits"] as Tab[]).map((t) => (
+            <div className="tabs">
+                {(Object.keys(TAB_LABELS) as Tab[]).map(t => (
                     <button
                         key={t}
-                        className={`tab ${t} ${tab === t ? "active" : ""}`}
+                        className={`tab-btn ${tab === t ? "active" : ""}`}
                         onClick={() => setTab(t)}
                     >
-                        <span className="tab-dot" />
-                        {t === "anime"  && "AnimeChan"}
-                        {t === "users"  && "Random User"}
-                        {t === "fruits" && "Fruityvice"}
+                        {TAB_LABELS[t]}
                     </button>
                 ))}
-            </nav>
-
-            {/* ENDPOINT ACTIVO */}
-            <div className="api-info">
-                <span className="api-info-label">Endpoint activo</span>
-                <span className="api-info-url">{endpointMap[tab]}</span>
             </div>
 
-            {/* PANEL SEGÚN TAB */}
-            <div style={{ display: connStatus !== "ok" ? "none" : "block" }}>
-                {tab === "anime"  && <AnimePanel />}
+            {/* ENDPOINT INFO */}
+            <div className="endpoint-bar">
+                <span className="endpoint-label">Endpoint activo:</span>
+                <code className="endpoint-url">{ENDPOINTS[tab]}</code>
+            </div>
+
+            {/* CONTENIDO */}
+            <main className="main">
+                {tab === "apod"   && <ApodPanel  />}
                 {tab === "users"  && <UsersPanel />}
                 {tab === "fruits" && <FruitsPanel />}
-            </div>
+            </main>
 
-            {connStatus === "error" && (
-                <div className="error-box">
-                    <strong>Backend no disponible</strong>
-                    Verifica que el backend esté corriendo en el puerto 4000
-                </div>
-            )}
-
-            {/* FOOTER */}
-            <footer className="footer">
-                <div className="footer-item"><span className="footer-dot" /><span>GET</span></div>
-                <div className="footer-item"><span className="footer-dot" /><span>POST</span></div>
-                <div className="footer-item"><span className="footer-dot" /><span>PUT</span></div>
-                <div className="footer-item"><span className="footer-dot" /><span>DELETE</span></div>
-                <div className="footer-item"><span className="footer-dot" /><span>ApiResponse&lt;T&gt;</span></div>
-                <div className="footer-item"><span className="footer-dot" /><span>Repository Pattern</span></div>
-            </footer>
         </div>
     );
 }

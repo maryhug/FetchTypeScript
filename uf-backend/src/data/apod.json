@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "date": "2024-01-01",
+    "title": "The Andromeda Galaxy",
+    "explanation": "La galaxia de Andrómeda es la galaxia espiral más cercana a la Vía Láctea, ubicada a unos 2.5 millones de años luz de distancia.",
+    "url": "https://apod.nasa.gov/apod/image/2401/M31_HubbleSpitzerGalex.jpg",
+    "media_type": "image"
+  }
+]

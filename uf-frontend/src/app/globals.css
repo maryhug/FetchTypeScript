@@ -287,3 +287,78 @@ body {
   color: var(--text-secondary);
   font-family: var(--font-mono);
 }
+
+/* ── Search bar ── */
+.search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.search-bar input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+}
+.btn-search {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+}
+.btn-search:hover { background: #1d4ed8; }
+
+/* ── APOD Panel ── */
+.apod-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.apod-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.apod-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+.apod-video {
+  width: 100%;
+  height: 180px;
+  border: none;
+}
+.apod-body {
+  padding: 0.75rem;
+}
+.apod-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  color: var(--text);
+}
+.apod-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.apod-explanation {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
