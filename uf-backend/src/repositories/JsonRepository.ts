@@ -5,8 +5,8 @@ export class JsonRepository<T> {
     private filePath: string;
 
     constructor(fileName: string) {
-        // Busca los archivos en src/data/
-        this.filePath = path.join(__dirname, "../data", fileName);
+        // process.cwd() apunta a la raíz del proyecto (donde está package.json)
+        this.filePath = path.join(process.cwd(), "src", "data", fileName);
     }
 
     readAll(): T[] {

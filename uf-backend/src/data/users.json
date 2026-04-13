@@ -1,25 +1,5 @@
 [
   {
-    "id": 1,
-    "name": {
-      "title": "Ms",
-      "first": "Valentina",
-      "last": "Torres"
-    },
-    "email": "v.torres@example.com",
-    "location": {
-      "country": "Colombia",
-      "city": "Medellín"
-    },
-    "picture": {
-      "large": "https://randomuser.me/api/portraits/women/1.jpg",
-      "medium": "https://randomuser.me/api/portraits/med/women/1.jpg",
-      "thumbnail": "https://randomuser.me/api/portraits/thumb/women/1.jpg"
-    },
-    "phone": "300-123-4567",
-    "nat": "CO"
-  },
-  {
     "id": 2,
     "name": {
       "title": "Mr",
@@ -128,6 +108,26 @@
     },
     "email": "maryhug@gmail.com",
     "phone": "3112458964",
+    "location": {
+      "country": "Colombia",
+      "city": "Medellín"
+    },
+    "picture": {
+      "large": "",
+      "medium": "",
+      "thumbnail": ""
+    },
+    "nat": "CO"
+  },
+  {
+    "id": 8,
+    "name": {
+      "title": "Ms",
+      "first": "Hugo",
+      "last": "Durán"
+    },
+    "email": "hduran@gmail.com",
+    "phone": "3115986320",
     "location": {
       "country": "Colombia",
       "city": "Medellín"

@@ -5,8 +5,8 @@ export class BaseRepository<T extends { id: number }> {
     private filePath: string;
 
     constructor(fileName: string) {
-        // __dirname apunta a /src/repositories, subimos un nivel para llegar a /src/data
-        this.filePath = path.join(__dirname, "../data", fileName);
+        // process.cwd() apunta a la raíz del proyecto (donde está package.json)
+        this.filePath = path.join(process.cwd(), "src", "data", fileName);
     }
 
     readAll(): T[] {
